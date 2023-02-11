@@ -38,11 +38,13 @@
 }
 
 .cnDetailedCardTextArea {
+  box-sizing: border-box;
   border: none;
   background-color: #fff;
   padding: 10px;
   outline: none;
   resize: none;
+  width: 80%;
 }
 
 .cnDetailedCardLikeIcon {
@@ -58,4 +60,29 @@
   font-size: 14px;
   cursor: pointer;
   color: #dbdbdb;
+}
+
+.cnDetailedCardTextAreaWrapper {
+  position: relative;
+  background: #fff;
+}
+
+.cnDetailedCardSendButton {
+  position: absolute;
+  bottom: 5px;
+  background: #2196f3;
+  right: 5px;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.cnDetailedCardSendButton:active {
+  background: #1976d2;
+}
+
+.cnDetailedCardSendButton:disabled {
+  background: #e3f2fd;
 }

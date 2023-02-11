@@ -1,6 +1,5 @@
-
 import UserBadge from "../UserBadge";
-import cn from 'classnames'
+import cn from "classnames";
 import Comment from "../Comment";
 import "./styles.css";
 import { nanoid } from "nanoid";
@@ -15,9 +14,20 @@ const DetailedCard = ({
   comments,
   isLikedByYou,
   className,
+  onLikeClick,
+  id,
+  onCommentSendClick,
+  mutateLoading,
 }) => {
-  const [isCommentsShown, setIsCommentsShown] = useState(false)
-  
+  const [isCommentsShown, setIsCommentsShown] = useState(false);
+  const [comment, setComment] = useState("");
+
+  const handleSendCommentClick = () => {
+    if (comment) {
+      onCommentSendClick(id, comment);
+      setComment('');
+    }
+  }
 
   const renderComments = () => {
     if (comments.length > 2 && !isCommentsShown) {
@@ -25,14 +35,19 @@ const DetailedCard = ({
       const commentForRender = commentsCopy.splice(comments.length - 2, 2);
       return (
         <>
-          <span className='cnDetailedCardCommentTitle' onClick={() => setIsCommentsShown(true)}>{`Показать еще ${
+          <span
+            className="cnDetailedCardCommentTitle"
+            onClick={() => setIsCommentsShown(true)}
+          >{`Показать еще ${
             comments.length - commentForRender.length
           } комментариев`}</span>
-          {commentForRender.map((comment) => <Comment {...comment} key={nanoid()}/>)}
+          {commentForRender.map((comment) => (
+            <Comment {...comment} key={nanoid()} />
+          ))}
         </>
       );
     }
-    return comments.map((comment) => <Comment {...comment} key={nanoid()}/>);
+    return comments.map((comment) => <Comment {...comment} key={nanoid()} />);
   };
   return (
     <div className={cn("cnDetailedCardRoot", className)}>
@@ -44,6 +59,7 @@ const DetailedCard = ({
       </div>
       <div className="cnDetailedCardButtons">
         <i
+          onClick={() => onLikeClick(id)}
           className={`${
             isLikedByYou ? "fas" : "far"
           } fa-heart cnDetailedCardLikeIcon`}
@@ -51,10 +67,22 @@ const DetailedCard = ({
         <i className="far fa-comment cnDetailedCardCommentIcon" />
       </div>
       <div className="cnDetailedCardCounter">{`Оценили ${likes} человек`}</div>
-      <div className="cnDetailedCardComments">
-        {renderComments()}
+      <div className="cnDetailedCardComments">{renderComments()}</div>
+      <div className="cnDetailedCardTextAreaWrapper">
+        <textarea
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          placeholder="Введите комментарий"
+          className="cnDetailedCardTextArea"
+        />
+        <button
+          disabled={mutateLoading}
+          className="cnDetailedCardSendButton"
+          onClick={handleSendCommentClick}
+        >
+          Отправить
+        </button>
       </div>
-      <textarea className="cnDetailedCardTextArea" />
     </div>
   );
 };
