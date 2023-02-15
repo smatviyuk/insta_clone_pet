@@ -15,16 +15,14 @@ export const getPhotos = (page = 1) => {
     try {
       const store = getState();
       if (page === 1) {
-        dispatch(getPhotosStarted);
+        dispatch(getPhotosStarted());
       }
-
       const response = await api.photos.getPhotos({
         params: {
           _page: page,
           _limit: 5,
         },
       });
-
       if (page === 1) {
         dispatch(setPhotosTotal(response.headers["x-total-count"]));
         dispatch(getPhotosSuccess([...response.data]));
@@ -40,21 +38,26 @@ export const getPhotos = (page = 1) => {
 export const toggleLike = (userId, photoId) => {
   return async (dispatch, getState) => {
     const state = getState();
-    
-    const newPhoto = getPhotoFromState(state.photos.photos, photoId)
+
+    const newPhoto = getPhotoFromState(state.photos.photos, photoId);
 
     if (newPhoto.likes.includes(userId)) {
-      newPhoto.likes = newPhoto.likes.filter(like => like !== userId)
+      newPhoto.likes = newPhoto.likes.filter((like) => like !== userId);
     } else {
-      newPhoto.likes.push(userId)
+      newPhoto.likes.push(userId);
     }
+
     try {
       const response = await api.photos.mutatePhoto({
         data: newPhoto,
         url: `/${photoId}`,
       });
 
-      const newPhotos = getUpdatedPhotoForState(state.photos.photos, photoId, response.data);
+      const newPhotos = getUpdatedPhotoForState(
+        state.photos.photos,
+        photoId,
+        response.data
+      );
 
       dispatch(getPhotosSuccess(newPhotos));
     } catch (error) {
@@ -68,24 +71,26 @@ export const sendComment = (nickname, photoId, text) => {
     dispatch(mutatePhotoStarted());
     const state = getState();
 
-    const newPhoto = getPhotoFromState(state.photos.photos, photoId)
+    const newPhoto = getPhotoFromState(state.photos.photos, photoId);
 
-    newPhoto.comments.push({
-      nickname,
-      text,
-    });
+    newPhoto.comments.push({ nickname, text });
 
-  try{
-    const response = await api.photos.mutatePhoto({
-      data: newPhoto,
-      url: `/${photoId}`,
-    });
-    const newPhotos = getUpdatedPhotoForState(state.photos.photos, photoId, response.data);
-    dispatch(getPhotosSuccess(newPhotos));
-    dispatch(mutatePhotoSuccess());
-  } catch (error) {
-    dispatch(mutatePhotoFailed(error));
-  }
-          
-  }
-}
+    try {
+      const response = await api.photos.mutatePhoto({
+        data: newPhoto,
+        url: `/${photoId}`,
+      });
+
+      const newPhotos = getUpdatedPhotoForState(
+        state.photos.photos,
+        photoId,
+        response.data
+      );
+
+      dispatch(getPhotosSuccess(newPhotos));
+      dispatch(mutatePhotoSuccess());
+    } catch (error) {
+      dispatch(mutatePhotoFailed(error));
+    }
+  };
+};

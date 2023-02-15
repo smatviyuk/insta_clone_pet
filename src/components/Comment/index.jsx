@@ -1,9 +1,9 @@
-import './styles.css'
+import "./styles.css";
 
-const Comment = ({nickname, text}) => {
+const Comment = ({ nickname, text }) => {
   return (
-    <div className='cnCommentRoot'>
-      <span className='cnCommentName'>{nickname}:</span>
+    <div className="cnCommentRoot">
+      <span className="cnCommentName">{nickname}:</span>
       <span>{text}</span>
     </div>
   );

@@ -1,0 +1,30 @@
+.cnUserPageRoot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 50px;
+}
+
+.cnUserPageRootContent {
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 100px;
+  padding-left: 10px;
+  width: 930px;
+}
+
+.cnUserPageCard {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.cnUserPageScroll {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cnUserPageNoPosts {
+  font-weight: 600;
+  font-size: 30px;
+  margin: auto;
+}
