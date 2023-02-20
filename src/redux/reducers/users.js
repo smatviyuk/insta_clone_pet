@@ -5,6 +5,8 @@ import {
   GET_USER_FAILED,
   GET_USER_STARTED,
   GET_USER_SUCCESS,
+  MUTATE_USER_STARTED,
+  MUTATE_USER_SUCCESS,
 } from "../actionCreators/users";
 
 const initialState = {
@@ -13,7 +15,8 @@ const initialState = {
   authorizedUser: undefined,
   isAuthorizedUserLoading: true,
   isAuthorizedUserError: false,
-  isUserError: false
+  isUserError: false,
+  isMutateLoading: false,
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -58,6 +61,18 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         isAuthorizedUserLoading: true,
+      };
+
+    case MUTATE_USER_STARTED:
+      return {
+        ...state,
+        isMutateLoading: true,
+      };
+
+    case MUTATE_USER_SUCCESS:
+      return {
+        ...state,
+        isMutateLoading: false,
       };
 
     default:

@@ -11,7 +11,7 @@ import {
   sendCommentOnUserPage,
   toggleLikeOnPost,
 } from "../../redux/actions/postsByUser";
-import { getUser } from "../../redux/actions/users";
+import { getUser, mutateUser } from "../../redux/actions/users";
 import "./styles.css";
 
 const UserPage = () => {
@@ -24,6 +24,9 @@ const UserPage = () => {
   );
   const isUserLoading = useSelector((state) => state.users.isUserLoading);
   const isUserError = useSelector((state) => state.users.isUserError);
+  const isUserMutateLoading = useSelector(
+    (state) => state.users.isMutateLoading
+  );
   const mutateLoading = useSelector((state) => state.photos.isMutateLoading);
 
   const dispatch = useDispatch();
@@ -65,6 +68,10 @@ const UserPage = () => {
     setPage(page + 1);
   };
 
+  const onEdit = async (data) => {
+    await dispatch(mutateUser(data, user.id));
+  };
+
   return (
     <Layout
       nickName={authorizedUser.nickname}
@@ -77,18 +84,22 @@ const UserPage = () => {
         </div>
       ) : (
         <div className="cnUserPageRoot">
-          {!isUserError && <UserBio
-            avatarUrl={user.avatarUrl}
-            nickname={user.nickname}
-            subscribed={user.subscribers.length}
-            subscribers={user.subscribers.length}
-            firstName={user.firstName}
-            lastName={user.lastName}
-            description={user.description}
-            url={user.url}
-            isMyPage={id == authorizedUser.id}
-            isSubscribed={user.subscribers.includes(authorizedUser.id)}
-          />}
+          {!isUserError && (
+            <UserBio
+              avatarUrl={user.avatarUrl}
+              nickname={user.nickname}
+              subscribed={user.subscribers.length}
+              subscribers={user.subscribers.length}
+              firstName={user.firstName}
+              lastName={user.lastName}
+              description={user.description}
+              url={user.url}
+              isMyPage={id == authorizedUser.id}
+              isSubscribed={user.subscribers.includes(authorizedUser.id)}
+              onEdit={onEdit}
+              fromLoading={isUserMutateLoading}
+            />
+          )}
 
           <div className="cnUserPageRootContent">
             {postsForRender.length ? (

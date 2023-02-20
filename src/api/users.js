@@ -8,3 +8,13 @@ export const getUser = (userId, config) =>
     url: `${URL}/${userId}`,
     ...config,
   });
+
+  export const mutateUser = (config) => {
+    config.url = `${URL}${config.url}`;
+  
+    return makeRequest({
+      method: "PUT",
+      ...config,
+    });
+  };
+  
