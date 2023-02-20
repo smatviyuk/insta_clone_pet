@@ -7,8 +7,12 @@ import {
   mutatePhotoSuccess,
   setPhotosTotal,
 } from "../actionCreators/photos";
+
 import { api } from "../../api";
-import { getPhotoFromState, getUpdatedPhotoForState } from "../../utils";
+import {
+  getPhotoFromState,
+  getUpdatedPhotoForState,
+} from "../../utils";
 
 export const getPhotos = (page = 1) => {
   return async (dispatch, getState) => {

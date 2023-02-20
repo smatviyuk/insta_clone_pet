@@ -7,6 +7,7 @@ import PhotoModal from "../PhotoModal";
 import TextArea from "../TextArea";
 
 import "./styles.css";
+import ImageWithLoader from "../ImageWithLoader";
 
 const DetailedCard = ({
   userName,
@@ -25,6 +26,7 @@ const DetailedCard = ({
   const [isCommentsShown, setIsCommentsShown] = useState(false);
   const [comment, setComment] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
+
 
   const handleSendCommentClick = () => {
     if (comment) {
@@ -69,8 +71,8 @@ const DetailedCard = ({
       <div className="cnDetailedCardHeader">
         <UserBadge nickName={userName} avatarUrl={avatarUrl} id={userId} />
       </div>
-      <div>
-        <img src={imgUrl} alt="img" className="cnDetailedCardImg" />
+      <div className="cnDetailedCardImgWrapper">
+        <ImageWithLoader className="cnDetailedCardImg" src={imgUrl} alt="img"/>
       </div>
       <div className="cnDetailedCardButtons">
         <i

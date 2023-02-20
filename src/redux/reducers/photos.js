@@ -13,6 +13,7 @@ const initialState = {
   isPhotosLoading: true,
   totalPhotos: 0,
   isMutateLoading: false,
+  isPhotoError: false,
 };
 
 export const photosReducer = (state = initialState, action) => {
@@ -27,6 +28,7 @@ export const photosReducer = (state = initialState, action) => {
       return {
         ...state,
         isPhotosLoading: false,
+        isPhotoError: true,
       };
 
     case GET_PHOTOS_SUCCESS:
@@ -34,6 +36,7 @@ export const photosReducer = (state = initialState, action) => {
         ...state,
         photos: action.payload,
         isPhotosLoading: false,
+        isPhotoError: false,
       };
 
     case SET_PHOTOS_TOTAL:

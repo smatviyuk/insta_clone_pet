@@ -2,6 +2,7 @@ import { useState } from "react";
 import cn from "classnames";
 import "./styles.css";
 import PhotoModal from "../PhotoModal";
+import ImageWithLoader from "../ImageWithLoader";
 
 const Card = ({
   imgUrl,
@@ -17,9 +18,10 @@ const Card = ({
 }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [comment, setComment] = useState("");
+
   return (
     <div className={cn("cnCardRoot", className)}>
-      <img src={imgUrl} alt={imgUrl} className="cnCardImage" />
+      <ImageWithLoader className="cnCardImage" src={imgUrl} alt={imgUrl}/>
       <div className="cnCardHover" />
       <div className="cnCardIcons">
         <i

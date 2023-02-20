@@ -7,6 +7,7 @@ import {
 const initialState = {
   posts: [],
   isPostsLoading: true,
+  isPostsError: false
 };
 
 export const postsByUserReducer = (state = initialState, action) => {
@@ -22,12 +23,14 @@ export const postsByUserReducer = (state = initialState, action) => {
         ...state,
         isPostsLoading: false,
         posts: action.payload,
+        isPostsError: false,
       };
 
     case GET_POSTS_FAILED:
       return {
         ...state,
         isPostsLoading: false,
+        isPostsError: true,
       };
 
     default:

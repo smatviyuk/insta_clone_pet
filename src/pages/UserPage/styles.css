@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 50px;
+  padding-top: 50px; 
 }
 
 .cnUserPageRootContent {
@@ -24,7 +24,13 @@
 }
 
 .cnUserPageNoPosts {
+  text-align: center;
   font-weight: 600;
-  font-size: 30px;
-  margin: auto;
+  font-size: 20px;
+}
+
+.cnMainLoaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

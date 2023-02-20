@@ -5,6 +5,7 @@ import Comment from "../Comment";
 import TextArea from "../TextArea";
 import UserBadge from "../UserBadge";
 import "./styles.css";
+import ImageWithLoader from "../ImageWithLoader";
 
 const PhotoModal = ({
   commentValue,
@@ -40,7 +41,7 @@ const PhotoModal = ({
     >
       <div className="cnModalRoot">
         <div className="cnModalImgWrapper">
-          <img src={imgUrl} alt={imgUrl} className="cnModalImg" />
+        <ImageWithLoader className="cnModalImg" src={imgUrl} alt={imgUrl}/>
         </div>
         <div className="cnModalCommentsBlock">
           <div>

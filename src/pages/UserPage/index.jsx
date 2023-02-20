@@ -18,10 +18,12 @@ const UserPage = () => {
   const authorizedUser = useSelector((state) => state.users.authorizedUser);
   const user = useSelector((state) => state.users.user);
   const posts = useSelector((state) => state.postsByUser.posts);
+  const isPostError = useSelector((state) => state.postsByUser.isPostsError);
   const isPostsLoading = useSelector(
     (state) => state.postsByUser.isPostsLoading
   );
   const isUserLoading = useSelector((state) => state.users.isUserLoading);
+  const isUserError = useSelector((state) => state.users.isUserError);
   const mutateLoading = useSelector((state) => state.photos.isMutateLoading);
 
   const dispatch = useDispatch();
@@ -64,57 +66,74 @@ const UserPage = () => {
   };
 
   return (
-    <Layout nickName={authorizedUser.nickname} id={authorizedUser.id} avatarUrl={authorizedUser.avatarUrl}>
-            {isPostsLoading || isUserLoading ? <div className="cnMainLoaderContainer">
-                <Bars color="#000BFF" height={80} width={80} />
-            </div> : <div className="cnUserPageRoot">
-                <UserBio
-                    avatarUrl={user.avatarUrl}
-                    nickname={user.nickname}
-                    subscribed={user.subscribers.length}
-                    subscribers={user.subscribers.length}
-                    firstName={user.firstName}
-                    lastName={user.lastName}
-                    description={user.description}
-                    url={user.url}
-                    isMyPage={id == authorizedUser.id}
-                    isSubscribed={user.subscribers.includes(authorizedUser.id)}
-                />
+    <Layout
+      nickName={authorizedUser.nickname}
+      id={authorizedUser.id}
+      avatarUrl={authorizedUser.avatarUrl}
+    >
+      {isPostsLoading || isUserLoading ? (
+        <div className="cnMainLoaderContainer">
+          <Bars color="#000BFF" height={80} width={80} />
+        </div>
+      ) : (
+        <div className="cnUserPageRoot">
+          {!isUserError && <UserBio
+            avatarUrl={user.avatarUrl}
+            nickname={user.nickname}
+            subscribed={user.subscribers.length}
+            subscribers={user.subscribers.length}
+            firstName={user.firstName}
+            lastName={user.lastName}
+            description={user.description}
+            url={user.url}
+            isMyPage={id == authorizedUser.id}
+            isSubscribed={user.subscribers.includes(authorizedUser.id)}
+          />}
 
-                <div className="cnUserPageRootContent">
-                    {postsForRender.length ? <InfiniteScroll
-                        dataLength={postsForRender.length}
-                        next={nextHandler}
-                        hasMore={postsForRender.length < posts.length}
-                        loader={<div className="cnMainLoaderContainer">
-                            <Bars color="#000BFF" height={15} width={15} />
-                        </div>}
-                        endMessage={
-                            <p className="cnMainLoaderContainer">Thats all!</p>
-                        }
-                        className="cnUserPageScroll"
-                    >
-                        {postsForRender.map(({ comments, likes, imgUrl, id }) =>
-                            <Card
-                                key={id}
-                                imgUrl={imgUrl}
-                                className="cnUserPageCard"
-                                likes={likes.length}
-                                comments={comments}
-                                isLikedByYou={likes.includes(authorizedUser.id)}
-                                onLikeClick={() => onLikeClick(id)}
-                                userData={{
-                                    userName: user.nickname,
-                                    avatarUrl: user.avatarUrl,
-                                    userId: user.id,
-                                }}
-                                onCommentSubmit={(comment) => onCommentSendClick(id, comment)}
-                                isMutateLoading={mutateLoading}
-                            />)}
-                    </InfiniteScroll> : <p className="cnUserPageNoPosts">User dont have posts!</p>}
-                </div>
-            </div>}
-        </Layout>
-    );
+          <div className="cnUserPageRootContent">
+            {postsForRender.length ? (
+              <InfiniteScroll
+                dataLength={postsForRender.length}
+                next={nextHandler}
+                hasMore={postsForRender.length < posts.length}
+                loader={
+                  <div className="cnMainLoaderContainer">
+                    <Bars color="#000BFF" height={15} width={15} />
+                  </div>
+                }
+                endMessage={<p className="cnMainLoaderContainer">Thats all!</p>}
+                className="cnUserPageScroll"
+              >
+                {postsForRender.map(({ comments, likes, imgUrl, id }) => (
+                  <Card
+                    key={id}
+                    imgUrl={imgUrl}
+                    className="cnUserPageCard"
+                    likes={likes.length}
+                    comments={comments}
+                    isLikedByYou={likes.includes(authorizedUser.id)}
+                    onLikeClick={() => onLikeClick(id)}
+                    userData={{
+                      userName: user.nickname,
+                      avatarUrl: user.avatarUrl,
+                      userId: user.id,
+                    }}
+                    onCommentSubmit={(comment) =>
+                      onCommentSendClick(id, comment)
+                    }
+                    isMutateLoading={mutateLoading}
+                  />
+                ))}
+              </InfiniteScroll>
+            ) : (
+              !isPostError && (
+                <p className="cnUserPageNoPosts">User dont have posts!</p>
+              )
+            )}
+          </div>
+        </div>
+      )}
+    </Layout>
+  );
 };
 export default UserPage;
